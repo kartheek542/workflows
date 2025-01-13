@@ -11,6 +11,9 @@ jobs:
     - name: Clone terraform scripts
       run: echo "Cloning Terraform code"
 
+    - name: Check git version
+      run: git --version
+      
     - name: Checking the cloud credentials
       run: echo "The values are $AWS_ACCESS_KEY_ID and $AWS_SECRET_ACCESS_KEY and $AWS_REGION"
       
