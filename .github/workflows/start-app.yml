@@ -10,21 +10,48 @@ jobs:
     steps:
     - name: Clone terraform scripts
       run: echo "Cloning Terraform code"
+
     - name: Checking the cloud credentials
       run: echo "The values are $AWS_ACCESS_KEY_ID and $AWS_SECRET_ACCESS_KEY and $AWS_REGION"
+      
     - name: Generate ssh keys
       run: ssh-keygen -t rsa -b 4096 -N "" -f "aws_terraform_key"
+
     - name: List the contents of the directory
       run: ls -la
+
+    - name: Archive the private key
+      uses: actions/upload-artifact@v4
+      with:
+        name: ssh-private-key
+        path: aws_terraform_key
+
     - name: Initialize Terraform
       run: echo "this is terraform init"
+
     - name: Validate Terraform
       run: echo "this is terraform validate"
+
     - name: Apply Terraform
       run: echo "this is terraform apply"
+
+    - name: Generate Ansible Inventory File
+      run: echo "Have to generate ansible inventory file here" > hostcode-inventory.yml
+
+    - name: List the contents of the directory
+      run: ls -la
+
   ensure-config:
     needs: provision-infra
     runs-on: ubuntu-latest
     steps:
-      - name: This is for ansible
-        uses: actions/checkout@v4
+    - name: Get the private ssh key
+      uses: actions/download-artifact@v4
+      with:
+        name: ssh-private-key
+
+    - name: List the contents of the directory
+      run: ls -la
+
+    - name: This is for ansible
+      run: echo "Have to trigger the ansible playbook"
