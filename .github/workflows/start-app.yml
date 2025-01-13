@@ -29,7 +29,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: ssh-private-key
-        path: aws_terraform_key
+        path: terraform_src/aws_terraform_key
 
     - name: Initialize Terraform
       run: echo "this is terraform init"
