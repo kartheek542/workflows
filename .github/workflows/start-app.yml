@@ -9,16 +9,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Clone terraform scripts
-      run: echo "Cloning Terraform code"
-
-    - name: Check git version
-      run: git --version
+      run: git clone https://github.com/kartheek542/hostcode-iac.git terraform_src
+      
+    - name: List the contents of the directory
+      run: ls -la
+      working-directory: terraform_src
       
     - name: Checking the cloud credentials
       run: echo "The values are $AWS_ACCESS_KEY_ID and $AWS_SECRET_ACCESS_KEY and $AWS_REGION"
       
     - name: Generate ssh keys
       run: ssh-keygen -t rsa -b 4096 -N "" -f "aws_terraform_key"
+      working-directory: terraform_src
 
     - name: List the contents of the directory
       run: ls -la
