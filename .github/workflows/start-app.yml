@@ -30,6 +30,14 @@ jobs:
       with:
         name: ssh-private-key
         path: terraform_src/aws_terraform_key
+    
+    - name: Install Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: "1.10.2"
+
+    - name: Ensure Terraform
+      run: terraform --version
 
     - name: Initialize Terraform
       run: echo "this is terraform init"
