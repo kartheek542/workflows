@@ -1,0 +1,33 @@
+name: delete-app
+on: workflow_dispatch
+jobs:
+  provision-infra:
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
+      AWS_REGION: ${{ secrets.CLOUD_REGION }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clone terraform scripts
+      run: git clone https://github.com/kartheek542/hostcode-iac.git terraform_src
+      
+    - name: Generate ssh keys
+      run: ssh-keygen -t rsa -b 4096 -N "" -f "aws_terraform_key"
+      working-directory: terraform_src
+
+    - name: Install Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: "1.10.2"
+
+    - name: Initialize Terraform
+      run: terraform init
+      working-directory: terraform_src
+
+    - name: Validate Terraform
+      run: terraform validate
+      working-directory: terraform_src
+
+    - name: Apply Terraform
+      run: terraform destroy --auto-approve
+      working-directory: terraform_src
