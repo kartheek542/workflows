@@ -11,19 +11,13 @@ jobs:
     - name: Clone terraform scripts
       run: git clone https://github.com/kartheek542/hostcode-iac.git terraform_src
       
-    - name: List the contents of the directory
-      run: ls -la
-      working-directory: terraform_src
-      
-    - name: Checking the cloud credentials
-      run: echo "The values are $AWS_ACCESS_KEY_ID and $AWS_SECRET_ACCESS_KEY and $AWS_REGION"
-      
     - name: Generate ssh keys
       run: ssh-keygen -t rsa -b 4096 -N "" -f "aws_terraform_key"
       working-directory: terraform_src
 
-    - name: List the contents of the directory
+    - name: List the contents of the terraform directory
       run: ls -la
+      working-directory: terraform_src
 
     - name: Archive the private key
       uses: actions/upload-artifact@v4
@@ -37,19 +31,26 @@ jobs:
         terraform_version: "1.10.2"
 
     - name: Initialize Terraform
-      run: echo "this is terraform init"
+      run: terraform init
       working-directory: terraform_src
 
     - name: Validate Terraform
-      run: echo "this is terraform validate"
+      run: terraform validate
       working-directory: terraform_src
 
     - name: Apply Terraform
-      run: echo "this is terraform apply"
+      run: terraform apply --auto-approve
       working-directory: terraform_src
 
-    - name: Generate Ansible Inventory File
-      run: echo "Have to generate ansible inventory file here" > hostcode-inventory.yml
+    - name: Get Terraform Outputs
+      run: terraform output -json > terraform-output.json
+      working-directory: terraform_src
+
+    - name: Archive the terraform output
+      uses: actions/upload-artifact@v4
+      with:
+        name: terraform-output
+        path: terraform_src/terraform-output.json
 
     - name: List the contents of the directory
       run: ls -la
@@ -63,8 +64,16 @@ jobs:
       with:
         name: ssh-private-key
 
+    - name: Get the terraform output
+      uses: actions/download-artifact@v4
+      with:
+        name: terraform-output
+
     - name: List the contents of the directory
       run: ls -la
+
+    - name: List the contents of the directory
+      run: cat terraform-output.json
 
     - name: This is for ansible
       run: echo "Have to trigger the ansible playbook"
