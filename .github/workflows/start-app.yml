@@ -36,17 +36,17 @@ jobs:
       with:
         terraform_version: "1.10.2"
 
-    - name: Ensure Terraform
-      run: terraform --version
-
     - name: Initialize Terraform
       run: echo "this is terraform init"
+      working-directory: terraform_src
 
     - name: Validate Terraform
       run: echo "this is terraform validate"
+      working-directory: terraform_src
 
     - name: Apply Terraform
       run: echo "this is terraform apply"
+      working-directory: terraform_src
 
     - name: Generate Ansible Inventory File
       run: echo "Have to generate ansible inventory file here" > hostcode-inventory.yml
