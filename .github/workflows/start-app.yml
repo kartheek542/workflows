@@ -79,6 +79,7 @@ jobs:
 
     - name: List the public IPs of the instances
       run: cat terraform-output.json
+      working-directory: hostcode-ansible
 
     - name: Generate the inventory file for ansible
       run: ./generate_inventory.py
