@@ -86,6 +86,7 @@ jobs:
 
     - name: Cat the generated inventory file
       run: cat hostcode-inventory.ini
+      working-directory: hostcode-ansible
 
     - name: This is for ansible
       run: echo "Have to trigger the ansible playbook"
