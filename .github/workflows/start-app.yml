@@ -72,8 +72,14 @@ jobs:
     - name: List the contents of the directory
       run: ls -la
 
-    - name: List the contents of the directory
+    - name: List the public IPs of the instances
       run: cat terraform-output.json
+
+    - name: Generate the inventory file for ansible
+      run: ./generate_inventory.py
+
+    - name: Cat the generated inventory file
+      run: cat hostcode-inventory.ini
 
     - name: This is for ansible
       run: echo "Have to trigger the ansible playbook"
