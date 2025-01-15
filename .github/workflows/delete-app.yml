@@ -1,7 +1,7 @@
 name: delete-app
 on: workflow_dispatch
 jobs:
-  provision-infra:
+  clean-infra:
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
