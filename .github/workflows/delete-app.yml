@@ -28,6 +28,6 @@ jobs:
       run: terraform validate
       working-directory: terraform_src
 
-    - name: Apply Terraform
+    - name: Destroy Terraform
       run: terraform destroy --auto-approve
       working-directory: terraform_src

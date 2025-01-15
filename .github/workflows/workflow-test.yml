@@ -1,4 +1,4 @@
-name: workflow-test
+name: tester
 on: workflow_dispatch
 jobs:
   provision-infra:
@@ -8,7 +8,31 @@ jobs:
       AWS_REGION: ${{ secrets.CLOUD_REGION }}
     runs-on: ubuntu-latest
     steps:
-    - name: Check python3 version
-      run: python3 --version
-    - name: Check python3 path
-      run: which python3
+    - name: Clone terraform scripts
+      run: git clone https://github.com/kartheek542/hostcode-iac.git terraform_src
+      
+    - name: Generate ssh keys
+      run: ssh-keygen -t rsa -b 4096 -N "" -f "aws_terraform_key"
+      working-directory: terraform_src
+
+    - name: Archive the private key
+      uses: actions/upload-artifact@v4
+      with:
+        name: ssh-private-key
+        path: terraform_src/aws_terraform_key
+
+  ensure-config:
+    needs: provision-infra
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clone ansible scripts
+      run: git clone https://github.com/kartheek542/hostcode-ansible.git hostcode-ansible
+
+    - name: Get the private ssh key
+      uses: actions/download-artifact@v4
+      with:
+        name: ssh-private-key
+        path: hostcode-ansible
+
+    - name: List the contents of the ansible directory
+      run: ls -la hostcode-ansible

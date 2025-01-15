@@ -59,15 +59,20 @@ jobs:
     needs: provision-infra
     runs-on: ubuntu-latest
     steps:
+    - name: Clone ansible scripts
+      run: git clone https://github.com/kartheek542/hostcode-ansible.git hostcode-ansible
+
     - name: Get the private ssh key
       uses: actions/download-artifact@v4
       with:
         name: ssh-private-key
+        path: hostcode-ansible
 
     - name: Get the terraform output
       uses: actions/download-artifact@v4
       with:
         name: terraform-output
+        path: hostcode-ansible
 
     - name: List the contents of the directory
       run: ls -la
@@ -77,6 +82,7 @@ jobs:
 
     - name: Generate the inventory file for ansible
       run: ./generate_inventory.py
+      working-directory: hostcode-ansible
 
     - name: Cat the generated inventory file
       run: cat hostcode-inventory.ini
