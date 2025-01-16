@@ -1,4 +1,4 @@
-name: tester
+name: start-app
 on: workflow_dispatch
 jobs:
   provision-infra:
@@ -15,11 +15,45 @@ jobs:
       run: ssh-keygen -t rsa -b 4096 -N "" -f "aws_terraform_key"
       working-directory: terraform_src
 
+    - name: List the contents of the terraform directory
+      run: ls -la
+      working-directory: terraform_src
+
     - name: Archive the private key
       uses: actions/upload-artifact@v4
       with:
         name: ssh-private-key
         path: terraform_src/aws_terraform_key
+    
+    - name: Install Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: "1.10.2"
+
+    - name: Initialize Terraform
+      run: terraform init
+      working-directory: terraform_src
+
+    - name: Validate Terraform
+      run: terraform validate
+      working-directory: terraform_src
+
+    - name: Apply Terraform
+      run: terraform apply --auto-approve
+      working-directory: terraform_src
+
+    - name: Get Terraform Outputs
+      run: terraform output -json > terraform-output.json
+      working-directory: terraform_src
+
+    - name: Archive the terraform output
+      uses: actions/upload-artifact@v4
+      with:
+        name: terraform-output
+        path: terraform_src/terraform-output.json
+
+    - name: List the contents of the directory
+      run: ls -la
 
   ensure-config:
     needs: provision-infra
@@ -34,5 +68,26 @@ jobs:
         name: ssh-private-key
         path: hostcode-ansible
 
-    - name: List the contents of the ansible directory
-      run: ls -la hostcode-ansible
+    - name: Get the terraform output
+      uses: actions/download-artifact@v4
+      with:
+        name: terraform-output
+        path: hostcode-ansible
+
+    - name: List the contents of the directory
+      run: ls -la
+
+    - name: List the public IPs of the instances
+      run: cat terraform-output.json
+      working-directory: hostcode-ansible
+
+    - name: Generate the inventory file for ansible
+      run: ./generate_inventory.py
+      working-directory: hostcode-ansible
+
+    - name: Cat the generated inventory file
+      run: cat hostcode-inventory.ini
+      working-directory: hostcode-ansible
+
+    - name: This is for ansible
+      run: echo "Have to trigger the ansible playbook"
