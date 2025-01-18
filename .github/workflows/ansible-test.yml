@@ -1,0 +1,17 @@
+name: ansible-test
+on: workflow_dispatch
+jobs:
+  install-ansible:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check python3 pip
+      run: python3 -m pip --version
+      
+    - name: Install ansible using pip
+      run: python3 -m pip install ansible
+
+    - name: Echo path
+      run: echo $PATH
+
+    - name: Check the ansible version
+      run: ansible --version
