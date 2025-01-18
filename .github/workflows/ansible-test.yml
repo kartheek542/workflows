@@ -6,6 +6,9 @@ jobs:
     steps:
     - name: Check python3 pip
       run: python3 -m pip --version
+
+    - name: Check the ansible version
+      run: ansible --version
       
     - name: Install ansible using pip
       run: python3 -m pip install ansible
@@ -15,3 +18,6 @@ jobs:
 
     - name: Check the ansible version
       run: ansible --version
+
+    - name: ansible path
+      run: which ansible
