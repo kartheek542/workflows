@@ -88,6 +88,10 @@ jobs:
       run: cat hostcode-inventory.ini
       working-directory: hostcode-ansible
 
+    - name: Cat the generated inventory file
+      run: chmod 400 hostcode-inventory.ini
+      working-directory: hostcode-ansible
+
     - name: Check ansible hostkeyverification
       run: echo $ANSIBLE_HOST_KEY_CHECKING
       working-directory: hostcode-ansible
