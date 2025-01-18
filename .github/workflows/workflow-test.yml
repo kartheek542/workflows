@@ -1,4 +1,4 @@
-name: start-app
+name: workflow-test
 on: workflow_dispatch
 jobs:
   provision-infra:
@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Clone terraform scripts
-      run: git clone https://github.com/kartheek542/hostcode-iac.git terraform_src
+      run: git clone --single-branch --branch dev https://github.com/kartheek542/hostcode-iac.git terraform_src
       
     - name: Generate ssh keys
       run: ssh-keygen -t rsa -b 4096 -N "" -f "aws_terraform_key"
@@ -73,9 +73,6 @@ jobs:
       with:
         name: terraform-output
         path: hostcode-ansible
-
-    - name: List the contents of the directory
-      run: ls -la
 
     - name: List the public IPs of the instances
       run: cat terraform-output.json
