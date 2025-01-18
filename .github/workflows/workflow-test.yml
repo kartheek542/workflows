@@ -56,6 +56,8 @@ jobs:
       run: ls -la
 
   ensure-config:
+    env:
+      ANSIBLE_HOST_KEY_CHECKING: False
     needs: provision-infra
     runs-on: ubuntu-latest
     steps:
