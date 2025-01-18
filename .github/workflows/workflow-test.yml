@@ -97,5 +97,5 @@ jobs:
       working-directory: hostcode-ansible
 
     - name: Run containerd
-      run: ansible-playbook -i hostcode-inventory.ini containerd.yml
+      run: ansible-playbook -i hostcode-inventory.ini hostcode-setup.yml
       working-directory: hostcode-ansible
