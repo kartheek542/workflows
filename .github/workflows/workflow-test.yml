@@ -50,7 +50,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: terraform-output
-        path: terraform_src/terraform-output.json
+        path: terraform_src/terraform-output.jsonhostcode-ansible.cfg
 
     - name: List the contents of the directory
       run: ls -la
@@ -58,6 +58,7 @@ jobs:
   ensure-config:
     env:
       ANSIBLE_HOST_KEY_CHECKING: False
+      ANSIBLE_CONFIG: hostcode-ansible.cfg
     needs: provision-infra
     runs-on: ubuntu-latest
     steps:
