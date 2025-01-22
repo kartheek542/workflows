@@ -50,7 +50,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: terraform-output
-        path: terraform_src/terraform-output.jsonhostcode-ansible.cfg
+        path: terraform_src/terraform-output.json
 
     - name: List the contents of the directory
       run: ls -la
