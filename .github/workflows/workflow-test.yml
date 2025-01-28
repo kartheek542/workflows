@@ -97,6 +97,6 @@ jobs:
       run: ansible -i hostcode-inventory.ini -m ping all
       working-directory: hostcode-ansible
 
-    - name: Run containerd
+    - name: Run Ansible Playbook
       run: ansible-playbook -i hostcode-inventory.ini hostcode-setup.yml
       working-directory: hostcode-ansible
