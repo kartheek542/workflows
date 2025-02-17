@@ -19,3 +19,7 @@ jobs:
     - name: Build and push jdk-17
       run: docker build -t kartheek542/hostcode:tester-jdk-17 . && docker push kartheek542/hostcode:tester-jdk-17
       working-directory: hostcode-testers/java/jdk17/
+
+    - name: Build and push worker-pod
+      run: docker build -t kartheek542/hostcode:job-worker . && docker push kartheek542/hostcode:job-worker
+      working-directory: hostcode-testers/worker-pod/
