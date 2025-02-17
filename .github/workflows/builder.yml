@@ -1,0 +1,24 @@
+name: builder
+on: workflow_dispatch
+jobs:
+  build-images:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clone image source scripts
+      run: git clone https://github.com/kartheek542/hostcode-testers.git
+
+    - name: Check docker version
+      run: docker --version
+
+    - name: Login to DockerHub
+      uses: docker/login-action@v3
+      with:
+        username: kartheek542
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+    - name: Check docker version
+      run: docker --version
+
+    # - name: Build and push jdk-17
+    #   run: git clone https://github.com/kartheek542/hostcode-testers.git
+    #   working-directory: hostcode-testers/java/jdk17/
