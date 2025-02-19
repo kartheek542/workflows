@@ -59,6 +59,9 @@ jobs:
     env:
       ANSIBLE_HOST_KEY_CHECKING: False
       ANSIBLE_CONFIG: hostcode-ansible.cfg
+      AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
+      AWS_REGION: ${{ secrets.CLOUD_REGION }}
     needs: provision-infra
     runs-on: ubuntu-latest
     steps:
