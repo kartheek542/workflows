@@ -2,7 +2,7 @@ name: builder
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 7 * * *'
+    - cron: '0 1 * * *'
 jobs:
   build-images:
     runs-on: ubuntu-latest
