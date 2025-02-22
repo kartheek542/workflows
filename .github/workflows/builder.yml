@@ -7,8 +7,11 @@ jobs:
   build-images:
     runs-on: ubuntu-latest
     steps:
-    - name: Clone image source scripts
+    - name: Clone image source scripts for testers
       run: git clone https://github.com/kartheek542/hostcode-testers.git
+
+    - name: Clone image source scripts for hostcode-backend
+      run: git clone https://github.com/kartheek542/hostcode-backend.git
 
     - name: Check docker version
       run: docker --version
@@ -18,6 +21,10 @@ jobs:
       with:
         username: kartheek542
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+    - name: Build and push hostcode-backend
+      run: docker build -t kartheek542/hostcode:backend-1.0 . && docker push kartheek542/hostcode:backend-1.0
+      working-directory: hostcode-backend/
 
     - name: Build and push jdk-17
       run: docker build -t kartheek542/hostcode:tester-jdk-17 . && docker push kartheek542/hostcode:tester-jdk-17
