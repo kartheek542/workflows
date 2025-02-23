@@ -12,11 +12,8 @@ jobs:
       with:
         node-version: '20.18.0'
 
-    - name: Check node version
-      run: node --version
-
-    - name: Check docker version
-      run: docker --version
+    - name: check jq
+      run: jq --version
 
     - name: listing env variables
       run: env
