@@ -46,6 +46,11 @@ jobs:
       run: terraform output -json > terraform-output.json
       working-directory: terraform_src
 
+    - name: Get Nodejs server public IP
+      id: nodejs-ip-step
+      run: cat terraform-output.json | jq -r .nodejs_public_ip.value
+      working-directory: terraform_src
+
     - name: Archive the terraform output
       uses: actions/upload-artifact@v4
       with:
@@ -54,6 +59,46 @@ jobs:
 
     - name: List the contents of the directory
       run: ls -la
+    outputs:
+      nodejs_public_ip: ${{ steps.nodejs-ip-step.outputs.value }}
+  
+  build-ui-image:
+    env:
+      VITE_API_URL: "http://${{ needs.provision-infra.outputs.nodejs_public_ip }}/api"
+    needs: provision-infra
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clone image source scripts for testers
+      run: git clone https://github.com/kartheek542/hostcode-ui.git
+    
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.18.0'
+
+    - name: check jq
+      run: jq --version
+
+    - name: listing env variables
+      run: env
+
+    - name: Login to DockerHub
+      uses: docker/login-action@v3
+      with:
+        username: kartheek542
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+    - name: Install dependencies
+      run: npm install
+      working-directory: hostcode-ui/
+
+    - name: Build source
+      run: npm run build
+      working-directory: hostcode-ui/
+
+    - name: Build and push hostcode-backend
+      run: docker build -t kartheek542/hostcode:ui-1.0 . && docker push kartheek542/hostcode:ui-1.0
+      working-directory: hostcode-ui/
 
   ensure-config:
     env:
