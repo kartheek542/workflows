@@ -27,6 +27,10 @@ jobs:
         username: kartheek542
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
+    - name: Install dependencies
+      run: npm install
+      working-directory: hostcode-ui/
+
     - name: Build source
       run: npm run build
       working-directory: hostcode-ui/
