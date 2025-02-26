@@ -48,7 +48,7 @@ jobs:
 
     - name: Get Nodejs server public IP
       id: nodejs-ip-step
-      run: cat terraform-output.json | jq -r .nodejs_public_ip.value
+      run: echo "ip=$(cat terraform-output.json | jq -r .nodejs_public_ip.value)" >> "$GITHUB_OUTPUT"
       working-directory: terraform_src
 
     - name: Archive the terraform output
@@ -60,11 +60,11 @@ jobs:
     - name: List the contents of the directory
       run: ls -la
     outputs:
-      nodejs_public_ip: ${{ steps.nodejs-ip-step.outputs.value }}
+      nodejs_public_ip: ${{ steps.nodejs-ip-step.outputs.ip }}
   
   build-ui-image:
     env:
-      VITE_API_URL: "http://${{ needs.provision-infra.outputs.nodejs_public_ip }}/api"
+      VITE_API_URL: "https://${{ needs.provision-infra.outputs.nodejs_public_ip }}/api"
     needs: provision-infra
     runs-on: ubuntu-latest
     steps:
