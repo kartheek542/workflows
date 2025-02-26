@@ -80,7 +80,7 @@ jobs:
       run: jq --version
 
     - name: listing env variables
-      run: env
+      run: env | grep "VITE"
 
     - name: Login to DockerHub
       uses: docker/login-action@v3
