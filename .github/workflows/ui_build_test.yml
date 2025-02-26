@@ -6,7 +6,7 @@ jobs:
     steps:
     - name: Clone image source scripts for testers
       id: nodejs-ip-step
-      run: echo "1.2.3.4"
+      run: echo "1.2.3.4" >> "$GITHUB_OUTPUT"
     outputs:
       nodejs_public_ip: ${{ steps.nodejs-ip-step.outputs.value }}
 
