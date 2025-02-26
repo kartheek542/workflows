@@ -13,6 +13,7 @@ jobs:
   build-ui-image:
     env:
       VITE_API_URL: "http://${{ needs.setup.outputs.nodejs_public_ip }}/api"
+    needs: setup
     runs-on: ubuntu-latest
     steps:
     - name: test environment
