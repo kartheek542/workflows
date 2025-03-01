@@ -137,7 +137,7 @@ jobs:
       run: cat hostcode-inventory.ini
       working-directory: hostcode-ansible
 
-    - name: Cat the generated inventory file
+    - name: modify the permissions of the private key
       run: chmod 400 aws_terraform_key
       working-directory: hostcode-ansible
 
