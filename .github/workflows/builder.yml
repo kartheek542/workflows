@@ -27,7 +27,7 @@ jobs:
       working-directory: hostcode-backend/
 
     - name: Build and push jdk-17
-      run: docker build -t kartheek542/hostcode:tester-jdk-17 . && docker push kartheek542/hostcode:tester-jdk-17
+      run: docker build -t kartheek542/hostcode:tester-1 . && docker push kartheek542/hostcode:tester-1
       working-directory: hostcode-testers/java/jdk17/
 
     - name: Build and push worker-pod
