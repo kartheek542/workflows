@@ -114,6 +114,7 @@ jobs:
       HOSTCODE_DB_PASSWORD: ${{ secrets.HOSTCODE_DB_PASSWORD }}
       HOSTCODE_DB_PORT: 5432
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      ADMIN_JWT_TOKEN: ${{ secrets.ADMIN_JWT_TOKEN }}
 
 
     needs: build-ui-image
